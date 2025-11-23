@@ -1,8 +1,11 @@
 const ws = new WebSocket('ws://localhost:6969');
 
 
-const chatInputField = document.querySelector('#chat-input-field');
-const chatSendButton = document.querySelector('#chat-send-button');
+const clientName = document.querySelector('#client-name');
+const createRoomButton = document.querySelector('#create-room-button');
+
+const roomName = document.querySelector('#room-name');
+const joinRoomButton = document.querySelector('#join-room-button');
 
 
 
@@ -16,13 +19,17 @@ ws.onopen = () => {
 ws.onmessage = ({ data }) =>{ 
     console.log(data) 
 
-    chatSendButton.addEventListener('click', () => {
-        console.log(chatInputField.value);
-        ws.send(JSON.stringify( {data : chatInputField.value, type : 'message'}));
-        chatInputField.value = '';
+    createRoomButton.addEventListener('click', () => {
+        console.log(clientName.value);
+        ws.send(JSON.stringify( {name: clientName.value, type : 'createRoom'}));
+        clientName.value = '';
     });
 
-    ws.send(JSON.stringify('hello'))
+    joinRoomButton.addEventListener('click', () => {
+        console.log(roomName.value);
+        ws.send(JSON.stringify( {roomName: roomName.value,name: clientName.value , type : 'joinRoom'}));
+        roomName.value = '';
+    });
 
 }
 
